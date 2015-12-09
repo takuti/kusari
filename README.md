@@ -1,8 +1,6 @@
-# Kusari
+# :link: Kusari
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/kusari`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Japanese random sentence generator based on Markov chain.
 
 ## Installation
 
@@ -22,7 +20,34 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+First of all, our application must load the gem and create a new instance as:
+
+```ruby
+require 'kusari'
+generator = Kusari::Generator.new
+# by default, the above statement is the same as:
+#   generator = Kusari::Generator.new(3, "./ipadic")
+```
+
+Note that the first argument `3` indicates N for the N-gram model used by creating tokenized word table. You can give arbitrary number. And the second one `./ipadic` tells the path of [IPA dictionary](http://taku910.github.io/mecab/#download), a dictionary for parsing Japanese strings, to the generator.
+
+Next, adding strings (reference sentences for Markov chain) can be done by:
+
+```ruby
+generator.add_string("ネロとパトラッシュは、この世で二人きりでした。")
+generator.add_string("彼らは、実の兄弟よりも仲のよい大の親友でした。")
+generator.add_string("ネロは、アルデンネ生まれの少年でした。")
+```
+
+Finally, we can obtain randomly generated sentence as:
+
+```ruby
+sentence = generator.generate(140)
+p sentence
+# => "ネロは、アルデンネ生まれの兄弟よりも仲のよい大の少年でした。"
+```
+
+Here, an argument of the generate method defines limit length for the generated sentence; `generator.generate(140)` creates a sentence which can be posted on Twitter, for example.
 
 ## Development
 
@@ -32,5 +57,5 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/kusari. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/takuti/kusari. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
 
