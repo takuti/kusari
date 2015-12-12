@@ -4,7 +4,7 @@ require "kusari/version"
 module Kusari
   class Generator
     def initialize(gram=3, ipadic_path="./ipadic")
-      @generator = MarkovSentenceGenerator.new(gram, ipadic_path)
+      @generator = MarkovSentenceGenerator.new([2, gram].max, ipadic_path)
     end
 
     def add_string(string)

@@ -26,8 +26,8 @@ class MarkovSentenceGenerator
   def add(string)
     tokens = tokenize(string)
 
-    # if there are at least 4 tokens, we can create both of HEAD-started and TAIL-ended array of words
-    return if tokens.size < 4
+    # if there are at least N+1 tokens, we can create both of HEAD-started and TAIL-ended array of words
+    return if tokens.size < @gram + 1
 
     # update markov_table
     i = 0
@@ -49,14 +49,14 @@ class MarkovSentenceGenerator
 
     # sample one HEAD-started array and create initial sentence based on that
     sampled_array = head_arrays.sample
-    sentence = sampled_array[1] + sampled_array[2]
+    sentence = sampled_array[1..@gram-1].join
 
     # start Markov chain until getting the TAIL flag
     loop do
       # select all arrays which can chain their head word to current tail of the sentence
       chain_arrays = Array.new
       @markov_table.each do |markov_array|
-        if markov_array[0] == sampled_array[2]
+        if markov_array[0] == sampled_array[@gram-1]
           chain_arrays << markov_array
         end
       end
@@ -66,11 +66,11 @@ class MarkovSentenceGenerator
 
       # grow current sentence and check if it has the TAIL flag
       sampled_array = chain_arrays.sample
-      if sampled_array[2] == TAIL
-        sentence += sampled_array[1]
+      if sampled_array[sampled_array.length-1] == TAIL
+        sentence += sampled_array[1..@gram-2].join
         break
       else
-        concat_string = sampled_array[1] + sampled_array[2]
+        concat_string = sampled_array[1..@gram-1].join
         break if sentence.length + concat_string.length > limit
         sentence += concat_string
       end
