@@ -1,6 +1,7 @@
 # coding: utf-8
 
 require "igo-ruby"
+require "msgpack"
 
 class MarkovSentenceGenerator
   HEAD = "[HEAD]"
@@ -14,6 +15,26 @@ class MarkovSentenceGenerator
 
     # save arrays of tokenized words based on the N-gram model
     @markov_table = Array.new
+  end
+
+  def load_table(path)
+    if File.exists?(path)
+      f = File.new(path, "rb").read
+      pack = MessagePack.unpack(f)
+      @gram = pack["gram"]
+      @markov_table = pack["table"]
+    else
+      false
+    end
+  end
+
+  def save_table(path)
+    pack = Hash.new
+    pack["gram"] = @gram
+    pack["table"] = @markov_table
+    File.open(path, "wb") do |f|
+      f.write pack.to_msgpack
+    end
   end
 
   def tokenize(string)

@@ -14,5 +14,13 @@ module Kusari
     def generate(limit)
       @generator.generate(limit)
     end
+
+    def load(path)
+      @generator.load_table(path)
+    end
+
+    def save(path)
+      @generator.save_table(path)
+    end
   end
 end
