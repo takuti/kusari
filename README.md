@@ -1,4 +1,4 @@
-# :link: Kusari [![Gem Version](https://badge.fury.io/rb/kusari.png)](https://badge.fury.io/rb/kusari)
+# :link: Kusari [![Gem Version](https://badge.fury.io/rb/kusari.png)](https://badge.fury.io/rb/kusari) [![Build Status](https://travis-ci.org/takuti/kusari.svg?branch=master)](https://travis-ci.org/takuti/kusari)
 
 Japanese random sentence generator based on Markov chain.
 
